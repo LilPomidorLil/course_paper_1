@@ -1,0 +1,229 @@
+\documentclass{article}
+\input{structure.tex}
+
+\date{}
+
+\begin{document}
+	\renewcommand{\arraystretch}{1.5}
+	
+	\large
+	\begin{titlepage}
+		\begin{center}
+			ФЕДЕРАЛЬНОЕ ГОСУДАРСТВЕННОЕ АВТОНОМНОЕ \\ ОБРАЗОВАТЕЛЬНОЕ УЧРЕЖДЕНИЕ \\ ВЫСШЕГО ПРОФЕССИОНАЛЬНОГО ОБРАЗОВАНИЯ \\ «НАЦИОНАЛЬНЫЙ ИССЛЕДОВАТЕЛЬСКИЙ УНИВЕРСИТЕТ \\ «ВЫСШАЯ ШКОЛА ЭКОНОМИКИ»
+			
+			\vspace{1cm}
+			
+			\textbf{Московский институт электроники и математики им. А.Н. Тихонова}
+			
+			\vspace{2cm}
+			
+			Рожин Андрей Константинович, группа БИТ 212
+			
+			\vspace{1.5cm}
+			
+			\textbf{Оценка аренды квартиры}
+			
+			\vspace{1cm}
+			
+			Курсовой проект \\
+			по дисциплине «Алгоритмизация и программирование»
+			
+			\vspace{1cm}
+			
+			студента образовательной программы бакалавриата \\
+			«Инфокоммуникационные технологии и системы связи»
+		
+			\vspace{1cm}
+			\begin{flushright}
+				Студент \underline{\hspace{5cm}}  \underline{А.К. Рожин}
+			\end{flushright}
+		
+			\vspace{0.5cm}	
+			
+		\begin{flushright}
+				\begin{tabular}{r} 
+				 Научный руководитель \\ [-0.35cm]
+				 к.т.н., доцент \\ [-0.35cm]
+				 \underline{И. В. Назаров} \\
+				 \\ \cline{1-1} 
+				\end{tabular}
+		\end{flushright}
+			
+			
+			\vfill
+			
+			Москва
+			2022
+		\end{center}
+	\end{titlepage}
+
+
+	\newpage
+	\thispagestyle{empty}
+
+	\section* {Аннотация}
+		\vspace{2ex}
+		Разработана система полного цикла оценивания стоимости аренды квартиры в городе Москве. В частности - создан парсер данных, скрипт предобработки, написаны алгоритмы машинного обучения (без использования готовых решений от сторонних разработчиков), исследованы зависимости в данных, проведен EDA, обучена и полностью готова к использованию система машинного обучения.
+		
+		Благодаря возможностям API Telegram, создана оболочка взаимодействия конечного пользователя со всеми вышеперечисленными компонентами системы. 
+		
+		В открытом доступе существуют похожие решения, но они не отвечают высоким стандартам удобства использования, точности прогнозов и масштабируемости системы.
+	\section* {Annotation}
+		\vspace{2ex}
+		A system of a full cycle assessment of the cost of renting an apartment in Moscow has been developed. In particular, a data parser was created, a preprocessing script, machine learning algorithms were written (without using ready-made solutions from third-party developers), data dependencies were investigated, EDA was conducted, a machine learning system was trained and fully ready for use.
+		
+		Thanks to the capabilities of the Telegram API, a shell of end-user interaction with all of the above system components has been created. 
+		
+		There are similar solutions in the public domain, but they do not meet the high standards of usability, accuracy of forecasts and scalability of the system.
+		
+	\newpage
+	\thispagestyle{empty}
+	\tableofcontents
+
+	\newpage
+	\setcounter{page}{4}
+	\section {Обоснование выбора языка программирования и средств разработки}
+
+		Проект разрабатывался на языке \textit{Python 3.8.8} \cite{litlink1}. Он позволяет встраивать в себя программы написанные на языке С/С++, упрощая интерфейс взаимодействия с ними. Также, это основный язык для написания оболочки взаимодействия с API Telegram и возможность взаимодействия с ядром \textit{Jupyter Notebook} \cite{litlink2}, что не менее важно в задачах анализа данных.
+		
+		Основой всего проекта стала библиотека \textit{NumPy} \cite{litlink3} --- проект с открытым исходным кодом, который упрощает работу с массивами и включает в себя сложные операции линейной алгебры. 
+		
+		Для хранения информации о квартирах был выбран \textit{Microsoft Excel} \cite{litlink4} --- простой и удобный интерфейс. В рамках моего проекта достаточно использования такой базы данных.
+		
+		Весь проект был разработан в интерактивной среде разработке \textit{IDE PyCharm 2021} \cite{litlink5}, которая обладает широким функционалом возможностей. Помимо этого, эта среда полностью настроена под язык \textit{Python}.
+		
+		Для контроля версий использовался \textit{Git} \cite{litlink6}. Для кроссплатформености --- возможности запуска программы на любом компьютере --- использовался \textit{Docker} \cite{litlink7}.
+
+	\newpage
+	\section {Описание сценария}
+	
+		\begin{figure}[H]
+			\centering
+			\subcaptionbox{}{\includegraphics[width=0.8\textwidth]{img/new_img/pdf/scenery_description}}%
+			\caption{Сценарий}
+			\label{fig:scenery_description}
+		\end{figure}
+	
+		На Рис. \ref{fig:scenery_description} представлен сценарий взаимодействия пользователя с программой. Ввод предполагаемой цены от пользователя --- опциональная возможность, которую можно пропустить.
+		
+	\newpage
+	\section {Спецификация интерфейса}
+
+		\begin{figure}[H]
+			\centering
+			\subcaptionbox{}{\includegraphics[width=0.25\textwidth]{img/old_img/eps-pdf/start_window}}%
+			\hfill % <-- Seperation
+			\subcaptionbox{}{\includegraphics[width=0.25\textwidth]{img/old_img/eps-pdf/comand_window}}%
+			\caption{Элементы взаимодействия}
+			\label{fig:start_element}
+		\end{figure}
+	
+		На Рис.\ref{fig:start_element} (a) мы видим диалоговое окно программы, описание бота и кнопку \textit{Начать}, которая отправит программе сообщение \textit{start} и запустится сценарий, показанный на Рис.\ref{fig:scenery_description}. Запустить этот сценарий можно иначе --- на Рис.\ref{fig:start_element} (b) показано \textit{Меню команд}, нажав на которое можно в ручную отправить стартовое сообщение.
+		
+		\begin{figure}[H]
+			\centering
+			\subcaptionbox{}{\includegraphics[width=0.25\textwidth]{img/old_img/eps-pdf/inline_keyboard}}%
+			\hfill % <-- Seperation
+			\subcaptionbox{}{\includegraphics[width=0.25\textwidth]{img/old_img/eps-pdf/default_keyboard}}%
+			\caption{Клавиатуры}
+			\label{fig:keyboard}
+		\end{figure}
+		
+		На Рис.\ref{fig:keyboard} показаны 2 типа клавиатур, которые будет использовать пользователь помимо встроенной в его систему. У них есть свои внутренние названия --- \textit{инлайн и дефолтная} клавиатуры. С точки зрения пользователя они отличаются только местонахождением на экране --- одна находится в самом диалоге, другая там же, где встроенная в систему клавиатура.
+		
+
+	\newpage
+	\section {Структура программы}
+	
+		Для удобства, декомпозируем программу на 4 части, которые будут подсистемами одной большой системы --- оболочки взаимодействия.
+		
+		\begin{figure}[H]
+			\centering
+			\subcaptionbox{}{\includegraphics[width=0.8\textwidth]{img/new_img/pdf/all_modules}}%
+			\caption{Основные блоки программы}
+			\label{fig:all_modules}
+		\end{figure}
+	
+		\subsection{Парсер}
+		
+			Парсер --- скрипт для сбора информации о квартире. Он написан на двух фреймворках --- \textit{Selenium} \cite{litlink8} и \textit{BeatifulSoup4} \cite{litlink9}. Первый отвечает за запуск браузера и сбор HTML разметки, второй за преобразование этой разметки в удобный для обработки вид.
+			
+			\begin{figure}[H]
+				\centering
+				\subcaptionbox{}{\includegraphics[width=0.8\textwidth]{img/new_img/pdf/parser}}%
+				\caption{Структура парсера}
+				\label{fig:parser}
+			\end{figure}
+		
+		\newpage
+		\subsection{Предобработка}
+		
+			Предобработка данных --- один из самых важных этапов построения пайплайна обучения. Все модели машинного обучения работают только с числами, они не способны определять номер дома, район и так далее. Как следствие, после сбора информации преобазовать ее в вид понятный компьютеру --- убрать названия домов, улиц и многое другое.	
+			
+			\begin{figure}[H]
+				\centering
+				\subcaptionbox{}{\includegraphics[width=0.5\textwidth]{img/new_img/pdf/preprocessing}}%
+				\caption{Структура предобработки}
+				\label{fig:preprocessing}
+			\end{figure}
+			
+	
+	
+		\newpage
+		\subsection{ML-модели}
+			
+			Как известно, в этом проекте не использовались реализации алгоритмов из библиотек, например, из \textit{SkLearn}. Решающие деревья и их ансамбли писались в ручную. Ниже представлена схема взаимодействия с реализацией алгоритмов машинного обучения.
+			
+			\begin{figure}[H]
+				\centering
+				\subcaptionbox{}{\includegraphics[width=0.8\textwidth]{img/new_img/pdf/ml_model}}%
+				\caption{Структура моделей машинного обучения}
+				\label{fig:ml_model}
+			\end{figure}
+		
+			На Рис.\ref{fig:ml_model} представлена схема интерфейса взаимодействия с кодом, написанным на \textit{Cython} \cite{litlink10} --- библиотеки, которая компилирует код написанный на \textit{Python} в код на \textit{C} с использованием макросов. Уместить всю структуру блока \textit{ML-модели} довольно сложно, поэтому была выбрана такая реализация блок-схемы.
+			
+		\newpage
+		\subsection{Взаимодействие с CIAN}
+		
+			Одной из особенностей программы является \textit{возможность оценить аренду в 2 клика}. Пользователю непотребуется самостоятельно вводить параметры квартиры, будет достаточно прислать ссылку на квартиру с сайта CIAN. Я вынес эту возможность в отдельный блок, так как не смотря на то, что работает она на тех же компонентах --- парсер, предобработка, модели машинного обучения, ее реализация потребовала значительного изменения этих блоков.
+			
+			\begin{figure}[H]
+				\centering
+				\subcaptionbox{}{\includegraphics[width=0.8\textwidth]{img/new_img/pdf/cian}}%
+				\caption{Структура взаимодействия с CIAN}
+				\label{fig:cian}
+			\end{figure}
+	
+	\newpage
+	\section{Описание алгоритма}	
+		
+		Алгоритм формирования БД для обучения.
+		
+		\begin{figure}[H]
+			\centering
+			\subcaptionbox{}{\includegraphics[width=0.8\textwidth]{img/new_img/pdf/algorithm}}%
+			\caption{Парсинг}
+			\label{fig:algorithm_parsing}
+		\end{figure}
+		
+	\newpage
+	%далее сам список используевой литературы
+	\begin{thebibliography}{}
+		\bibitem{litlink1}  Python release Python 3.8.8 // Python URL: \\ https://www.python.org/downloads/release/python-388/ 
+		\bibitem{litlink2}  Jupyter Notebook Home // JN URL: \\ https://jupyter.org/
+		\bibitem{litlink3}  NumPy Get Started // NP URL: \\ https://numpy.org/
+		\bibitem{litlink4}  Microsoft Excel Official // ME URL: \\ https://www.microsoft.com/ru-ru/microsoft-365/excel
+		\bibitem{litlink5}  PyCharm The Complete Package // PC URL: \\ https://www.jetbrains.com/pycharm/
+		\bibitem{litlink6}	GIT --distributed-is-the-new-centralized // GIT URL: \\
+		https://git-scm.com/
+		\bibitem{litlink7}  Docker Home // DH URL: \\
+		https://www.docker.com/
+		\bibitem{litlink8}  Selenium Chrome Python // SCP URL: \\
+		https://selenium-python.readthedocs.io/
+		\bibitem{litlink9}  BeatifulSoup4 Python // BS URL: \\
+		https://pypi.org/project/beautifulsoup4/
+		\bibitem{litlink10} Cython C-Extensions for Python // C URL: \\
+		https://cython.org/
+	\end{thebibliography}
+\end{document}
